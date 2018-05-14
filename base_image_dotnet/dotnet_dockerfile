@@ -1,0 +1,24 @@
+FROM centos:centos7
+RUN yum install -y epel which wget tar glib2-devel cairo-devel libtiff-devel libjpeg-devel giflib-devel libexif-devel libX11 libX11-devel libXt libXt-devel openssl-devel \
+    && yum groupinstall -y 'Development Tools' 'Fonts' \
+    && yum install -y epel-release \
+    && yum install -y libunwind gettext libcurl-devel zlib libicu \
+    && yum clean all \
+    && wget https://go.microsoft.com/fwlink/?linkid=843420 -O /tmp/dotnet111.tar.gz \
+    && wget https://download.microsoft.com/download/D/7/A/D7A9E4E9-5D25-4F0C-B071-210CB8267943/dotnet-centos-x64.1.1.2.tar.gz -O /tmp/dotnet112.tar.gz \
+	&& wget https://download.microsoft.com/download/5/F/0/5F0362BD-7D0A-4A9D-9BF9-022C6B15B04D/dotnet-runtime-2.0.0-linux-x64.tar.gz -O /tmp/dotnet200.tar.gz \ 
+    && cd /usr/local/bin \
+    && tar -xvzf /tmp/dotnet111.tar.gz \
+    && tar -xvzf /tmp/dotnet112.tar.gz \	
+    && tar -xvzf /tmp/dotnet200.tar.gz \
+    && rm /tmp/dotnet???.tar.gz
+RUN yum install -y yum-utils \
+    && rpm --import "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF" \
+    && yum-config-manager --add-repo http://download.mono-project.com/repo/centos/ \
+    && yum install -y mono-complete-4.2.3.4 \
+    && yum clean all
+RUN wget http://mxr.mozilla.org/seamonkey/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1 -O certdata.txt \
+    && mozroots --import --ask-remove --machine --file certdata.txt \
+    && rm -f certdata.txt \
+    && echo /usr/local/lib >> /etc/ld.so.conf \
+    && ldconfig
