@@ -1,0 +1,29 @@
+FROM jjxu/base_image_dotnet
+RUN wget https://raw.githubusercontent.com/Illumina/Pisces/master/binaries/5.2.7.47/Pisces_5.2.7.47.tar.gz -O Pisces_5.2.7.47.tar.gz \
+    && tar zxvf Pisces_5.2.7.47.tar.gz \
+    && rm -rf Pisces_5.2.7.47.tar.gz \
+    && wget https://raw.githubusercontent.com/Illumina/Pisces/master/binaries/5.2.7.47/Hygea_5.2.7.47.tar.gz -O Hygea_5.2.7.47.tar.gz \
+    && tar zxvf Hygea_5.2.7.47.tar.gz \
+    && rm -rf Hygea_5.2.7.47.tar.gz \
+    && wget https://raw.githubusercontent.com/Illumina/Pisces/master/binaries/5.2.7.47/Stitcher_5.2.7.47.tar.gz -O Stitcher_5.2.7.47.tar.gz \
+    && tar zxvf Stitcher_5.2.7.47.tar.gz \
+    && rm -rf Stitcher_5.2.7.47.tar.gz
+RUN yum install -y ncurses-devel \
+    && yum install -y bzip2-devel \
+    && yum install -y xz-devel \
+    && wget https://github.com/samtools/samtools/releases/download/1.6/samtools-1.6.tar.bz2 -O samtools-1.6.tar.bz2 \
+    && tar xvjf samtools-1.6.tar.bz2 \
+    && rm -rf samtools-1.6.tar.bz2 \
+    && cd samtools-1.6 \
+    && ./configure \
+    && make \
+    && make install \
+    && cd /
+COPY bssh_native_app-0.9.1.0.tar.gz /bssh_native_app-0.9.1.0.tar.gz
+RUN  wget https://bootstrap.pypa.io/get-pip.py \
+    && python get-pip.py \
+    && rm -rf get-pip.py \
+    && /usr/bin/pip install pysam \
+    && /usr/bin/pip install simplejson /bssh_native_app-0.9.1.0.tar.gz
+COPY somatic_app.py /somatic_app.py
+COPY resources /resources
