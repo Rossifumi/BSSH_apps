@@ -1,0 +1,220 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "SampleChooser",
+            "size": 300,
+            "valueType": "Input",
+            "allowedPermissions": "read",
+            "label": "Sample",
+            "required": false,
+            "id": "sample-id",
+            "rules": "sample-reader"
+        },      
+        {
+            "$type": "ProjectChooser",
+            "size": 300,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
+        },
+
+        {
+            "$type": "Select",
+        	"id": "select-phred",
+        	"label": "Phred",
+        	"multiselect": false,
+        	"choices": [
+    		{
+			"value": "-phred33",
+			"text": "Phred33",
+			"selected": true
+	    	},
+		    {
+			"value": "-phred64",
+			"text": "Phred64",
+			"selected": false
+		    }
+	        ]
+        },
+        {
+            "$type": "Select",
+            "id": "select-adapter",
+        	"label": "Adapter Sequence",
+            "helpText":"specifies the path to a fasta file containing all the adapters, PCR sequences etc. The naming of the various sequences within this file determines how they are used.",
+        	"multiselect": false,
+        	"choices": [
+    		{
+			"value": "NexteraPE-PE.fa",
+			"text": "NexteraPE-PE.fa",
+			"selected": true
+	    	},
+		    {
+			"value": "TruSeq2-PE.fa",
+			"text": "TruSeq2-PE.fa",
+			"selected": false
+		    },
+            {
+			"value": "TruSeq2-SE.fa",
+			"text": "TruSeq2-SE.fa",
+			"selected": false
+		    },
+            {
+    		"value": "TruSeq3-PE-2.fa",
+			"text": "TruSeq3-PE-2.fa",
+			"selected": false
+		    },
+            {
+        	"value": "TruSeq3-PE.fa",
+			"text": "TruSeq3-PE.fa",
+			"selected": false
+		    },
+            {
+            "value": "TruSeq3-SE.fa",
+			"text": "TruSeq3-SE.fa",
+			"selected": false
+		    },
+	        ]
+        }, 
+        {
+            "$type": "Numeric",
+            "id": "seedMismatches",
+        	"size": 100,
+        	"required": false,
+        	"label": "Seed Mismatches",
+            "helpText": "specifies the maximum mismatch count which will still allow a full match to be performed for adapter trimming.",
+        	"min": 0,
+        	"max": 5,
+        	"value": 2,
+        	"numericType": "Integer"
+        },        
+        {
+            "$type": "Numeric",
+            "id": "palindromeClipThreshold",
+            "size": 100,
+        	"required": false,
+        	"label": "Palindrome Clip Threshold",
+            "helpText": "specifies how accurate the match between the two 'adapter ligated' reads must be for PE palindrome read alignment.",
+        	"min": 0,
+        	"max": 50,
+        	"value": 30,
+        	"numericType": "Integer"
+        },        
+        {
+            "$type": "Numeric",
+            "id": "simpleClipThreshold",
+            "size": 100,
+            "required": false,
+        	"label": "Simple Clip Threshold:",
+            "helpText": "specifies how accurate the match between any adapter etc. sequence must be against a read.",
+        	"min": 0,
+        	"max": 20,
+        	"value": 10,
+        	"numericType": "Integer"
+        },        
+        {
+            "$type": "SectionBreak"
+        },        
+        {
+            "$type": "Numeric",
+        	"id": "leading",
+        	"size": 100,
+        	"required": false,
+        	"label": "Leading quality",
+            "helpText": "Specifies the minimum quality required to keep a base.",
+        	"min": 0,
+        	"max": 5,
+        	"value": 3,
+        	"numericType": "Integer"
+        },
+        {
+            "$type": "Numeric",
+            "id": "trailing",
+        	"size": 100,
+        	"required": false,
+        	"label": "Trailing quality",
+            "helpText": "Specifies the minimum quality required to keep a base.",
+        	"min": 0,
+        	"max": 5,
+        	"value": 3,
+        	"numericType": "Integer"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "Numeric",
+            "id": "windowSize",
+            "size": 100,
+            "required": false,
+        	"label": "Window Size",
+            "helpText":"specifies the number of bases to average across.",
+        	"min": 0,
+        	"max": 10,
+        	"value": 4,
+        	"numericType": "Integer"
+        },        
+        {
+            "$type": "Numeric",
+            "id": "requiredQuality",
+            "size": 100,
+            "required": false,
+            "label": "Required Quality",
+            "helpText":"specifies the average quality required.",
+        	"min": 0,
+        	"max": 30,
+        	"value": 15,
+        	"numericType": "Integer"
+        },    
+        {
+            "$type": "Numeric",
+            "id": "min_len",
+            "size": 100,
+            "required": false,
+        	"label": "Minimal length",
+            "helpText":"Specifies the minimum length of reads to be kept.",
+        	"min": 0,
+        	"max": 50,
+        	"value": 36,
+        	"numericType": "Integer"
+        },
+
+
+        
+        {
+            "$type": "SectionBreak"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
