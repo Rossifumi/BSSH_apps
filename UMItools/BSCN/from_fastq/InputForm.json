@@ -1,0 +1,91 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "ProjectChooser",
+            "size": 400,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please select an output project.",
+            "id": "project-id",
+            "css": "controls",
+            "helpText": "Select the project that stores the analysis results.",
+            "rules": "is-project-owner"
+        }, 
+        {
+            "$type": "SampleChooser",
+            "size": 400,
+            "valueType": "Input",
+            "allowedPermissions": "read",
+            "multiselect": "true",
+            "helpText": "Browse to the sample you want to analyze and select the check box. You can analyze multiple samples.",
+            "label": "Choose BioSample(s)",
+            "name": "sample-id",
+            "required": true,
+            "requiredMessage": "Please select at least one sample.",
+            "readOnly": true,
+            "id": "sample-id",
+            "rules": "sample-reader,range-sample-gigabases,all-single-or-paired,min-read-length,consistent-read-length,max-number-samples,max-overall-sample-gigabases,single-end-warning"
+        },
+        {
+            "$type": "Select",
+            "id": "DATA-GenomeFolder",
+            "label": "Reference Genome",
+            "helpText": "Select the reference genome. Currently, you can only use Human (UCSC hg19).",
+            "choices": [ 
+                { 
+                    "value": "/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta",
+                    "text": "Human (UCSC hg19)",
+                    "selected": "true"
+            	}, 
+                { 
+                    "value": "/genomes/Mus_musculus/UCSC/mm9/Sequence/BowtieIndex",
+                    "text": "Mus musculus (UCSC mm9)",
+                    "selected": "false"
+    			}
+		   ]
+        },
+        {
+            "$type": "TextBox",
+            "size": 200,
+            "value": "NNNNNNNNN",
+        	"label": "BC pattern",
+        	"required": true,
+        	"requiredMessage": "Please enter BC pattern for your fastq files.",
+        	"id": "bc-pattern",
+        	"helpText": "this help text will display next to the control in a pop over"
+        },
+        {
+            "$type": "SectionBreak"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
