@@ -1,0 +1,158 @@
+{% assign txt_summary = result.files.where.ends_with["summary.txt"].first %}
+{% assign txt_fastqc_data = result.files.where.ends_with["fastqc_data.txt"].first %}
+
+{% assign img_tick = result.files.where.ends_with["tick.png"].first.href %}
+{% assign img_warning = result.files.where.ends_with["warning.png"].first.href %}
+{% assign img_error = result.files.where.ends_with["error.png"].first.href %}
+{% assign img_per_base_quality = result.files.where.ends_with["per_base_quality.png"].first.href %}
+{% assign img_per_tile_quality = result.files.where.ends_with["per_tile_quality.png"].first.href %}
+{% assign img_per_sequence_quality = result.files.where.ends_with["per_sequence_quality.png"].first.href %}
+{% assign img_per_base_sequence_content = result.files.where.ends_with["per_base_sequence_content.png"].first.href %}
+{% assign img_per_sequence_gc_content = result.files.where.ends_with["per_sequence_gc_content.png"].first.href %}
+{% assign img_per_base_n_content = result.files.where.ends_with["per_base_n_content.png"].first.href %}
+{% assign img_sequence_length_distribution = result.files.where.ends_with["sequence_length_distribution.png"].first.href %}
+{% assign img_duplication_levels = result.files.where.ends_with["duplication_levels.png"].first.href %}
+{% assign img_adapter_content = result.files.where.ends_with["adapter_content.png"].first.href %}
+
+{% assign status_per_base_quality = txt_summary.tsv.parse.to_array[0][0] | stringify %}
+{% assign status_per_tile_quality = txt_summary.tsv.parse.to_array[1][0] | stringify %}
+{% assign status_per_sequence_quality = txt_summary.tsv.parse.to_array[2][0] | stringify %}
+{% assign status_per_base_sequence_content = txt_summary.tsv.parse.to_array[3][0] | stringify %}
+{% assign status_per_sequence_gc_content = txt_summary.tsv.parse.to_array[4][0] | stringify %}
+{% assign status_per_base_n_content = txt_summary.tsv.parse.to_array[5][0] | stringify %}
+{% assign status_sequence_length_distribution = txt_summary.tsv.parse.to_array[6][0] | stringify %}
+{% assign status_duplication_levels = txt_summary.tsv.parse.to_array[7][0] | stringify %}
+{% assign status_adapter_content = txt_summary.tsv.parse.to_array[9][0] | stringify %}
+
+
+<!doctype html>
+<html>
+<head>
+     <title>{{ result.name }}</title>
+     <link rel="stylesheet" type="text/css"
+        href="https://da1s119xsxmu0.cloudfront.net/libraries/basestrap/1.0.0/css/master.min.css" />
+</head>
+<body>
+    <div class="row-fluid">
+        <div class="col-xs-12">
+            <h3>{{ result.name }}</h3>
+                <div id="per-base-quality">
+                    {% assign section_header = "Per base sequence quality" %}
+                    {% case status_per_base_quality %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_base_quality}}">
+                </div>
+                
+                <div id="per-tile-quality">
+                    {% assign section_header = "Per tile sequence quality" %}
+                    {% case status_per_tile_quality %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_tile_quality}}">
+                </div>
+
+                <div id="per-sequence-quality">
+                    {% assign section_header = "Per sequence quality scores" %}
+                    {% case status_per_sequence_quality %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_sequence_quality}}">
+                </div>
+
+                <div id="per-base-sequence-content">
+                    {% assign section_header = "Per base sequence content" %}
+                    {% case status_per_base_sequence_content %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_base_sequence_content}}">
+                </div>
+
+                <div id="per-sequence-gc-content">
+                    {% assign section_header = "Per sequence GC content" %}
+                    {% case status_per_sequence_gc_content %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_sequence_gc_content}}">
+                </div>
+
+                <div id="per-base-n-content">
+                    {% assign section_header = "Per base N content" %}
+                    {% case status_per_base_n_content %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_per_base_n_content}}">
+                </div>
+
+                <div id="sequence-length-distribution">
+                    {% assign section_header = "Sequence Length Distribution" %}
+                    {% case status_sequence_length_distribution %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_sequence_length_distribution}}">
+                </div>
+
+                <div id="duplication-levels">
+                    {% assign section_header = "Sequence Duplication Levels" %}
+                    {% case status_duplication_levels %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_duplication_levels}}">
+                </div>
+
+                <div id="adapter-content">
+                    {% assign section_header = "Adapter Content" %}
+                    {% case status_adapter_content %}
+                        {% when '"PASS"' %}
+                            <h4><img src="{{img_tick}}">{{section_header}}</h4>
+                        {% when '"WARN"' %}
+                            <h4><img src="{{img_warning}}">{{section_header}}</h4>
+                        {% when '"FAIL"' %}
+                            <h4><img src="{{img_error}}">{{section_header}}</h4>
+                    {% endcase %}
+                    <img src="{{img_adapter_content}}">
+                </div>
+        </div>
+    </div>
+</body>
+</html>
