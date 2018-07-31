@@ -1,0 +1,522 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "helpText": "The default name is the app name with the date and time the app was started.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "ProjectChooser",
+            "size": 400,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please select an output project.",
+            "id": "project-id",
+            "css": "controls",
+            "helpText": "Select the project that stores the analysis results.",
+            "rules": "is-project-owner"
+        },      
+        {
+            "$type": "SectionBreak"
+        },
+        {
+            "$type": "SampleChooser",
+            "size": 400,
+            "valueType": "Input",
+            "allowedPermissions": "read",
+            "multiselect": "true",
+            "helpText": "Browse to the sample you want to analyze and select the check box. You can analyze multiple samples.",
+            "label": "Sample(s)",
+            "name": "sample-id",
+            "required": true,
+            "requiredMessage": "Please select at least one sample.",
+            "readOnly": true,
+            "id": "sample-id",
+            "rules": "sample-reader,range-sample-gigabases,all-single-or-paired,min-read-length,consistent-read-length,max-number-samples,max-overall-sample-gigabases,single-end-warning"
+        },
+        {
+            "$type": "Select",
+            "id": "genomes-map",
+            "label": "Reference Genome",
+            "helpText": "Select the reference genome. Currently, you can only use Human (UCSC hg19).",
+            "choices": [
+                { 
+                    "value": null,
+                    "text": "Select Panel"
+                },
+		        { 
+                    "value": "hg19",
+                    "text": "Homo sapiens (UCSC hg19)"
+		        },
+		        { 
+                    "value": "GRCh38Decoy",
+                    "text": "Homo sapiens (GRCh38Decoy)"
+		        },
+		        { 
+                    "value": "mm9",
+                    "text": "Mus musculus (mm9)"		
+                },
+		        { 
+                    "value": "rn4",
+                    "text": "Rattus norvegicus (rn4)"
+		        },
+		        { 
+                    "value": "UMD3.1",
+                    "text": "Bos taurus (UMD3.1)"
+                },
+		        { 
+                    "value": "AGPv3",
+                    "text": "Zea mays (AGPv3)"
+		        },
+		        { 
+                    "value": "IRGSP-1.0",
+                    "text": "Oryza sativa japonica (IRGSP-1.0)"
+	            },
+		        { 
+                    "value": "Sscrofa10.2",
+                    "text": "Sus scrofa (Sscrofa10.2)"
+		        },
+		        { 
+                    "value": "CanFam3.1",
+                    "text": "Canis familiaris (CanFam3.1)"
+		        },
+		        { 
+                    "value": "Gm01",
+                    "text": "Glycine max (Gm01)"
+		        },
+		        { 
+                    "value": "Galgal4",
+                    "text": "Glycine max (Galgal4)"
+		        },
+		        { 
+                    "value": "Oar_v3.1",
+                    "text": "Ovis aries (Oar_v3.1)"
+		        },
+                { 
+                    "value": "custom",
+                    "text": "Custom Genome (select genome fasta file below)"
+                }
+		   ]
+        },
+        {
+            "$type": "FileChooser",
+            "size": 400,
+            "valueType": "Input",
+            "extensionFilters": ".fasta,.fa", 
+            "multiselect": false,
+            "label": "Custom Genome (Optional)",
+            "required": false,
+            "helpText": "Please choose the whole genome FASTA file.",
+            "requiredMessage": "Please choose the whole genome FASTA file.",
+            "id": "whole-genome-fasta"
+        },
+        {
+            "$type": "Select",
+            "id": "manifest-id",
+            "label": "Targeted Amplicons",
+            "multiselect": false,
+            "helpText": "Select a panel of targeted amplicons representative of the selected samples for analysis.",
+            "required": true,
+            "requiredMessage": "Please select a panel from the drop-down list.",
+            "choices": [
+                { 
+                    "value": null,
+                    "text": "Select Panel"
+                },
+                { 
+                    "value": "AmpliSeq for Illumina Cancer HotSpot Panel v2 (20171207)",
+                    "text": "AmpliSeq for Illumina Cancer HotSpot Panel v2 (20171207)"
+                },
+                { 
+                    "value": "AmpliSeq for Illumina Comprehensive Cancer Panel (20171207)",
+                    "text": "AmpliSeq for Illumina Comprehensive Cancer Panel (20171207)"
+                },
+                { 
+                    "value": "AmpliSeq for Illumina Exome Panel (20171207)",
+                    "text": "AmpliSeq for Illumina Exome Panel (20171207)"
+                },
+                { 
+                    "value": "TruSeq Amplicon - Cancer Panel (AFP1)",
+                    "text": "TruSeq Amplicon - Cancer Panel (AFP1)"
+                },
+                { 
+                    "value": "TruSeq Custom Amplicon Control Pool 1 (ACP1)",
+                    "text": "TruSeq Custom Amplicon Control Pool 1 (ACP1)"
+                },
+                                { 
+                    "value": "TruSeq Custom Amplicon Control Pool 3 (ACP3)",
+                    "text": "TruSeq Custom Amplicon Control Pool 3 (ACP3)"
+                },
+                { 
+                    "value": "TruSight Myeloid Sequencing Panel",
+                    "text": "TruSight Myeloid Sequencing Panel"
+                },
+                { 
+                    "value": "custom",
+                    "text": "Custom Panels (select manifest file below)"
+                }
+        	],
+             "togglers": [
+                {
+                    "toggleOnValue": "custom", 
+                    "toggleFields": "custom-manifest" 
+                }    
+            ]
+        },
+        {
+            "$type": "FileChooser",
+            "size": 400,
+            "valueType": "Input",
+            "required": true,
+        	"allowedPermissions": "read",
+        	"searchQuery" : "Category:Basespace.Manifest.Amplicon",
+        	"chooserType": "ByProject",
+        	"multiselect": false,
+            "helpText": "Select a manifest file to be used for analysis (only available when \"Custom Panel\" is selected in the \"Targeted Amplicons\" drop-down list). To upload a new manifest file, navigate to a Project and select the \"Import\" feature or use the BaseSpace CLI for larger manifests such as an exome panel.",
+        	"label": "Custom Manifest File",
+        	"requiredMessage": "Please choose a manifest file",
+        	"id": "custom-manifest"
+        },
+        {
+            "$type": "RadioButton",
+            "id": "aligner",
+            "label": "Aligner",
+            "value": "BWAWholeGenome",
+            "helpText": "Choose which aligner to use. Use BWA for most input data. Use TruSeq Amplicon Aligner only for TruSeq Amplicon data.",
+        	"choices": [
+        		{
+            		"label": "BWA",
+        			"value": "BWAWholeGenome"
+        		},
+                {
+                	"label": "TruSeq Amplicon Aligner",
+        			"value": "Amplicon"                    
+                }
+        	]
+        },
+        {
+            "$type": "RadioButton",
+            "id": "variant-caller",
+            "label": "Variant Caller",
+            "value": "PiscesGermline",
+            "helpText": "Choose which variant caller to use. Somatic variant caller is recommended for cancer samples, and Germline is recommended for other sample types.",
+        	"choices": [
+        		{
+            		"label": "Germline",
+        			"value": "PiscesGermline"
+        		},
+        		{
+            		"label": "Somatic",
+        			"value": "PiscesSomatic"
+        		}
+        	],
+            "togglers": [
+                {
+                    "toggleOnValue": "PiscesSomatic",
+                    "toggleFields": "somatic-variant-caller-threshold"
+                }
+            ]
+        },
+        {
+            "$type": "Numeric",
+            "id": "somatic-variant-caller-threshold",
+        	"size": 50,
+        	"required": true,
+            "requiredMessage": "Please enter a threshold level between 1 and 30.",
+        	"label": "Somatic Variant Frequency Threshold (Percentage)",
+        	"min": 1,
+        	"max": 30,
+        	"value": 5,
+            "numericType": "Integer",
+            "helpText": "Select the somatic variant frequency threshold above which somatic variants will be called. Lowering the threshold from the default of 5 may result in more false positive variant calls. Enter an integer between 1 and 30."
+        },
+        {
+            "$type": "Numeric",
+            "id": "variant-caller-depth-filter",
+        	"size": 70,
+        	"required": true,
+            "requiredMessage": "Please enter a depth filter level between 10 and 10000.",
+        	"label": "Variant Caller Depth Filter",
+        	"min": 10,
+        	"max": 10000,
+        	"value": 10,
+        	"numericType": "Integer",
+            "helpText": "Select the depth filter level below which variants will be marked as filtered. Low filter values may result in more false positive variants passing filter. Enter an integer between 10 and 10000."
+        },
+        {
+            "$type": "FileChooser",
+            "size": 400,
+            "valueType": "Input",
+            "extensionFilters": ".vcf,.vcf.gz", 
+            "multiselect": true,
+            "label": "Genotypes of Interest VCF (Optional)",
+            "required": false,
+            "helpText": "Please choose up to 5 VCF files containing variants of interests.",
+            "id": "forced-genotyping-vcfs",
+            "rules": "validate-forced-genotyping-vcfs"
+        },
+        {
+            "$type": "RadioButton",
+            "id": "hygea",
+            "label": "Indel Realignment",
+            "helpText": "Indel Realignment using Hygea. Using this option may improve detection of medium size indels. However, overall accuracy may either increase or decrease in different panels. Total analysis time may also increase considerably.",
+            "value": "0",
+            "choices": [
+        		{
+        			"value": "1",
+        			"label": "On"
+        		},
+        		{
+        			"value": "0",
+        			"label": "Off"
+        		}
+        	]
+        },
+        {
+            "$type": "RadioButton",
+            "id": "annotation-source",
+        	"label": "Annotation",
+        	"value": "refseq",
+            "helpText": "Choose which gene and transcript annotation reference database to use. Choose None to turn off variant annotation.",
+        	"choices": [
+        		{
+        			"value": "refseq",
+        			"label": "RefSeq"
+        		},
+        		{
+        			"value": "ensembl",
+        			"label": "Ensembl"
+        		},
+            	{
+        			"value": "none",
+        			"label": "None"
+        		}
+        	],
+            "rules": "validate-annotation-source"
+        }
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var minSizeGigabases = 0;
+                var maxSizeGigabases = 30;
+                
+                var errors = [];
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                for (var i = 0; i < samples.length; i++)
+                {
+                    var numReads = samples[i].NumReadsPF;
+                    var totalCycles = samples[i].Read1;
+                    if (samples[i].IsPairedEnd)
+                    {
+                        totalCycles = totalCycles + samples[i].Read2;
+                    }
+                    var gigabases = numReads * totalCycles;
+
+                    if (gigabases <= minSizeGigabases * 1000000000)
+                    {
+                        errors.push({ ControlId: 'sample-id', ResourceId: samples[i].Id, Message: 'Size of sample ' + samples[i].SampleId + ' must be greater than ' + minSizeGigabases + ' gigabases.'});
+                    }
+                     
+                    if (gigabases > maxSizeGigabases * 1000000000)
+                    {
+                        errors.push({ ControlId: 'sample-id', ResourceId: samples[i].Id, Message: 'Size of sample ' + samples[i].SampleId + ' is greater than ' + maxSizeGigabases + ' gigabases.'});
+                    }
+                }
+                
+                if (errors.length > 0)
+                {
+                    return errors;
+                }
+            ",
+            "id": "range-sample-gigabases"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                var isPairedEnd = samples[0].IsPairedEnd;
+                 
+                for (var i = 0; i < samples.length; i++)
+                {
+                    if (samples[i].IsPairedEnd !== isPairedEnd)
+                    {
+                        return { Message: 'This app only supports input samples that are either all single-end or all paired-end.' };
+                    }
+                }
+                return null;
+            ",
+            "id": "all-single-or-paired"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var minLength = 50;
+                
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                errors = [];
+                for(var i= 0; i< samples.length; i++)
+                {
+                    var sample = samples[i];
+                    if(sample.Read1 < minLength)
+                    {
+                        errors.push({ ControlId: 'sample-id', ResourceId: samples[i].Id, Message : 'Length of read 1 for sample ' + sample.SampleId + ' is less than ' + minLength + ' base pairs'});
+                    }
+                                                     
+                    if(sample.IsPairedEnd)
+                    {
+                        if(sample.Read2 < minLength)
+                        {
+                            errors.push({ ControlId: 'sample-id', ResourceId: samples[i].Id, Message : 'Length of read 2 for sample ' + sample.SampleId + ' is less than ' + minLength + ' base pairs'});
+                        }                
+                    }
+                }
+                
+                if (errors.length > 0)
+                {
+                    return errors;   
+                }
+                
+            ",
+            "id": "min-read-length"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                var read1Length = samples[0].Read1;
+                var read2Length = samples[0].Read2;
+                 
+                for (var i = 0; i < samples.length; i++)
+                {
+                    if (samples[i].Read1 !== read1Length || (samples[i].IsPairedEnd && samples[i].Read2 !== read2Length))
+                    {
+                        return { Message: 'This app only supports input samples that have the same read lengths.' };
+                    }
+                }
+            ",
+            "id": "consistent-read-length"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+        	"callback": "
+                var maxNumberSamples = 384;
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                if (samples.length > maxNumberSamples)
+                {
+                    return { Message: 'The TruSeq Amplicon App supports up to a maximum of ' + maxNumberSamples + ' sample pairs.' }
+                }
+            ",
+        	"id": "max-number-samples"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var maxSizeGigabases = 2400;
+                 
+                var totalGigabases = 0;            
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                for (var i = 0; i < samples.length; i++)
+                {
+                    var numReads = samples[i].NumReadsPF;
+                    var totalCycles = samples[i].Read1;
+                    if (samples[i].IsPairedEnd)
+                    {
+                        totalCycles = totalCycles + samples[i].Read2;
+                    }
+                    var totalGigabases = totalGigabases + numReads * totalCycles;
+                }
+                                
+                if (totalGigabases > maxSizeGigabases * 1000000000)
+                {
+                    return { Message: 'Total size of input samples is greater than ' + maxSizeGigabases + ' gigabases.'};
+                }
+            ",
+            "id": "max-overall-sample-gigabases"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Warning",
+            "callback": "                
+                var samples = dataProvider.GetProperty('Input.sample-id');
+                warnings = [];
+                for(var i= 0; i< samples.length; i++)
+                {              
+                    var sample = samples[i];
+                    if(!sample.IsPairedEnd)
+                    {
+                        warnings.push({ ControlId: 'sample-id', ResourceId: samples[i].Id, Message : 'Sample ' + sample.SampleId + ' is a single-end sample.'});
+                    }
+                }
+                
+                if (warnings.length > 0)
+                {
+                    return warnings;   
+                }
+            ",
+            "id": "single-end-warning"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var maxFileCount = 5;
+                 
+                var files = dataProvider.GetProperty('Input.forced-genotyping-vcfs');
+                if (!files) { return null; }
+                if (files.length > maxFileCount) {
+                    return { Message: 'Total number of genotypes of interest VCFs is greater than ' + maxFileCount };
+                }
+                
+                return null;
+            ",
+            "id": "validate-forced-genotyping-vcfs"
+        },
+        {
+            "$type": "ScriptValidationRule",
+            "severity": "Error",
+            "callback": "
+                var wholeGenomeFasta = dataProvider.GetProperty('Input.whole-genome-fasta');
+                var annotationSource = dataProvider.GetCurrentControlProperty();
+                
+                if (wholeGenomeFasta && annotationSource !== 'none') {
+                    return { Message: 'Annotation must be set to None when using a custom genome' };
+                }
+                
+                return null;
+            ",
+            "id": "validate-annotation-source"
+        }
+    ]
+}
