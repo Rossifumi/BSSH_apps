@@ -1,0 +1,60 @@
+FROM centos:centos7
+RUN yum install -y which wget tar unzip git make gcc bzip2 \
+&& wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz \
+&& tar -zxf jdk-8u151-linux-x64.tar.gz \
+&& rm -rf jdk-8u151-linux-x64.tar.gz \
+&& update-alternatives --install /usr/bin/java java /jdk1.8.0_151/bin/java 100 \
+&& update-alternatives --install /usr/bin/javac javac /jdk1.8.0_151/bin/javac 100 \
+&& wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.6.zip \
+&& unzip fastqc_v0.11.6.zip \
+&& rm -rf fastqc_v0.11.6.zip \
+&& cd FastQC \
+&& chmod 755 fastqc \
+&& ln -s /FastQC/fastqc /usr/local/bin/fastqc \
+&& cd / \
+&& wget https://bootstrap.pypa.io/get-pip.py \
+&& python get-pip.py \
+&& rm -rf get-pip.py \
+&& pip install cutadapt \
+&& curl -fsSL https://github.com/FelixKrueger/TrimGalore/archive/0.4.5.tar.gz -o trim_galore.tar.gz \
+&& tar xvzf trim_galore.tar.gz \
+&& rm -rf trim_galore.tar.gz \
+&& mv TrimGalore-0.4.5/trim_galore /usr/bin/ \
+&& wget https://github.com/helixminer/wgs_for_beginner/raw/master/scripts/SOAPnuke \
+&& chmod +x SOAPnuke \
+&& wget http://www.zlib.net/zlib-1.2.11.tar.gz \
+&& tar -xvzf zlib-1.2.11.tar.gz \
+&& rm -rf zlib-1.2.11.tar.gz \
+&& cd zlib-1.2.11 \
+&& ./configure \
+&& make \
+&& make install \
+&& cd / \
+&& git clone https://github.com/lh3/bwa.git \
+&& cd bwa \
+&& make \
+&& cd / \
+&& wget https://github.com/broadinstitute/picard/releases/download/2.17.2/picard.jar \
+&& wget https://software.broadinstitute.org/gatk/download/auth?package=GATK -O GenomeAnalysisTK-3.8-0.tar.bz2 \
+&& tar xvjf GenomeAnalysisTK-3.8-0.tar.bz2 \
+&& mv GenomeAnalysisTK-3.8-0-ge9d806836/GenomeAnalysisTK.jar . \
+&& rm -rf GenomeAnalysisTK-3.8-0-ge9d806836 \
+&& rm -rf GenomeAnalysisTK-3.8-0.tar.bz2 \
+&& yum install python-devel \
+&& pip install conda \
+&& conda install R \
+&& conda config --add channels r \
+&& conda config --add channels conda-forge \
+&& conda config --add channels bioconda \
+&& yum install -y ncurses-devel \
+&& yum install bzip2-devel \
+&& yum install xz-devel \
+&& wget https://github.com/samtools/samtools/releases/download/1.6/samtools-1.6.tar.bz2 \
+&& tar xvjf samtools-1.6.tar.bz2 \
+&& rm -rf samtools-1.6.tar.bz2 \
+&& cd samtools-1.6 \
+&& ./configure \
+&& make \
+&& make install \
+&& cd / \
+&& conda install vardict

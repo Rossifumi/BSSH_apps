@@ -1,0 +1,137 @@
+FROM centos:centos7
+
+###FROM jjxu/base_image_dotnet
+
+#################### install trim_galore
+RUN wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz && \
+tar -zxf jdk-8u151-linux-x64.tar.gz && \
+rm -rf jdk-8u151-linux-x64.tar.gz && \
+update-alternatives --install /usr/bin/java java /jdk1.8.0_151/bin/java 100 && \
+update-alternatives --install /usr/bin/javac javac /jdk1.8.0_151/bin/javac 100 && \
+
+wget http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.6.zip && \
+unzip fastqc_v0.11.6.zip && \
+rm -rf fastqc_v0.11.6.zip && \
+cd FastQC && \
+chmod 755 fastqc && \
+ln -s /FastQC/fastqc /usr/local/bin/fastqc && \
+cd / && \
+
+yum -y install python-pip && \
+pip install --upgrade pip && \
+pip install Cython && \
+pip install cutadapt && \
+
+curl -fsSL https://github.com/FelixKrueger/TrimGalore/archive/0.4.5.tar.gz -o trim_galore.tar.gz && \
+tar xvzf trim_galore.tar.gz && \
+rm -rf trim_galore.tar.gz && \
+mv TrimGalore-0.4.5/trim_galore /usr/bin/ && \
+cd / && \
+
+#################### install SOAPnuke filter
+pip install boost && \
+pip install cmake && \
+pip install configparser && \
+
+wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.bz2 && \
+tar xvjf boost_1_66_0.tar.bz2 && \
+rm -rf boost_1_66_0.tar.bz2 && \
+mv boost_1_66_0 /usr/local && \
+cd /usr/include && \
+ln -s /usr/local/boost_1_66_0/boost boost  && \
+cd /usr/local/boost_1_66_0 && \
+./bootstrap.sh --prefix=/usr/local/ && \
+./bjam toolset=gcc --layout=tagged --build-type=complete stage && \
+cd stage && \
+find $PWD/lib/*.* -type f -exec ln -s {} /usr/lib/ \; && \
+cd / && \
+
+wget http://www.zlib.net/zlib-1.2.11.tar.gz && \
+tar -xvzf zlib-1.2.11.tar.gz && \
+rm -rf zlib-1.2.11.tar.gz && \
+cd zlib-1.2.11 && \
+./configure && \
+make && \
+make install && \
+cd / && \
+
+wget https://sourceforge.net/projects/log4cplus/files/log4cplus-stable/1.0.3/log4cplus-1.0.3.tar.bz2/download -O log4cplus-1.0.3.tar.bz2 && \
+tar -xvjf log4cplus-1.0.3.tar.bz2 && \
+rm -rf log4cplus-1.0.3.tar.bz2 && \
+cd log4cplus-1.0.3 && \
+./configure && \
+make && \
+make install && \
+cd / && \
+
+wget https://www.openssl.org/source/openssl-1.0.2n.tar.gz && \
+tar -xvzf openssl-1.0.2n.tar.gz && \
+rm -rf openssl-1.0.2n.tar.gz && \
+cd openssl-1.0.2n && \
+./config && \
+make && \
+make install && \
+cd / && \
+
+
+
+git clone https://github.com/BGI-flexlab/SOAPnuke.git && \
+cd SOAPnuke/src && \
+cmake . && \
+make && \
+cd / && \
+
+### excutable SOAPnuke
+wget https://github.com/helixminer/wgs_for_beginner/raw/master/scripts/SOAPnuke && \
+chmod +x SOAPnuke && \
+
+
+
+#################### install bwa mem
+
+git clone https://github.com/lh3/bwa.git && \
+cd bwa && \
+make && \
+cd / && \
+
+
+#################### install picard
+wget https://github.com/broadinstitute/picard/releases/download/2.17.2/picard.jar && \
+
+
+#################### install gatk
+
+wget https://software.broadinstitute.org/gatk/download/auth?package=GATK -O GenomeAnalysisTK-3.8-0.tar.bz2 && \
+tar xvjf GenomeAnalysisTK-3.8-0.tar.bz2 && \
+mv GenomeAnalysisTK-3.8-0-ge9d806836/GenomeAnalysisTK.jar . && \
+rm -rf GenomeAnalysisTK-3.8-0-ge9d806836 && \
+rm -rf GenomeAnalysisTK-3.8-0.tar.bz2 && \
+
+#################### install vardict
+
+### install conda
+wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh && \
+bash Miniconda2-latest-Linux-x86_64.sh && \
+conda install R && \
+
+conda config --add channels r && \
+conda config --add channels defaults && \
+conda config --add channels conda-forge && \
+conda config --add channels bioconda && \
+rm -rf Miniconda2-latest-Linux-x86_64.sh && \
+
+### install samtools
+yum install ncurses-devel && \
+yum install bzip2-devel && \
+yum install xz-devel && \
+wget https://github.com/samtools/samtools/releases/download/1.6/samtools-1.6.tar.bz2 && \
+tar xvjf samtools-1.6.tar.bz2 && \
+cd samtools-1.6 && \
+./configure && \
+make && \
+make install && \
+rm -rf samtools-1.6.tar.bz2 && \
+
+conda install vardict
+
+

@@ -1,0 +1,354 @@
+{
+    "$type": "Form",
+    "fields": [
+        {
+            "$type": "TextBox",
+            "size": 400,
+            "minLength": 0,
+            "maxLength": 150,
+            "value": "Example [LocalDateTime]",
+            "label": "Analysis Name",
+            "required": true,
+            "requiredMessage": "Please enter name for your app session.",
+            "id": "app-session-name"
+        },
+        {
+            "$type": "SampleChooser",
+            "size": 300,
+            "valueType": "Input",
+            "allowedPermissions": "read",
+            "label": "Sample",
+            "required": false,
+            "id": "sample-id",
+            "rules": "sample-reader"
+        },      
+        {
+            "$type": "ProjectChooser",
+            "size": 300,
+            "valueType": "Output",
+            "allowedPermissions": "owner",
+            "label": "Save Results To",
+            "required": true,
+            "requiredMessage": "Please choose a project",
+            "id": "project-id",
+            "allowResourceCreation": true,
+            "rules": "is-project-owner"
+        },
+        {
+            "$type": "SectionBreak"
+        },
+        {
+        "$type": "FieldSet",
+    	"id": "trimGalorePara",
+    	"label": "trim_galore parameters",
+    	"isCollapsible": true,
+    	"isOpen": true,
+    	"helpText": "Some useful paragraph on what this field set is about.",
+    	"fields": [
+            {
+                        "$type": "SectionBreak"
+            },
+            {
+                "$type": "RadioButton",
+                "id": "TGtrimOrNot",
+                "label": "Trim 1bp from 3'end",
+                "helpText": "Trims 1 bp off every read from its 3' end.",
+            	"value": "--trim1",
+            	"choices": [
+            		{
+            			"value": "--trim1",
+            			"label": "Yes"
+            		},
+            		{
+            			"value": "",
+            			"label": "No"
+            		}
+            	]
+            },
+            {
+                "$type": "RadioButton",
+                "id": "TGgzipOrNot",
+                "label": "Compress output file",
+                "helpText": "Compress the output file with GZIP.",
+                "value": "--gzip",
+            	"choices": [
+            		{
+            			"value": "--gzip",
+            			"label": "Yes"
+            		},
+            		{
+            			"value": "--dont_gzip",
+            			"label": "No"
+            		}
+            	]
+            },
+            {
+                "$type": "RadioButton",
+                "id": "TGfastqcOrNot",
+                "label": "Run FastQC",
+                "helpText": "Run FastQC in the default mode on the FastQ file once trimming is complete.",
+                "value": "--fastqc",
+                "choices": [
+            		{
+            			"value": "--fastqc",
+            			"label": "Yes"
+            		},
+            		{
+            			"value": "",
+            			"label": "No"
+            		}
+            	]
+            },
+            {
+                "$type": "Numeric",
+                "id": "TGtrimLength",
+            	"size": 100,
+            	"required": false,
+            	"label": "Shortest length allowed",
+                "helpText": "Discard reads that became shorter than this length",
+            	"min": 0,
+            	"max": 150,
+            	"value": 60,
+            	"numericType": "Integer"
+            },
+            {
+                "$type": "Numeric",
+                "id": "TGquality",
+                "size": 100,
+            	"required": false,
+            	"label": "Quality criteria",
+                "helpText": "Trim low-quality ends from reads in addition to adapter removal.",
+            	"min": 0,
+            	"max": 150,
+            	"value": 30,
+            	"numericType": "Integer"
+            }
+        ]
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "FieldSet",
+    	"id": "SOAPnukePara",
+    	"label": "Preprocessing parameters",
+    	"isCollapsible": true,
+    	"isOpen": true,
+    	"helpText": "Some useful paragraph on what this field set is about.",
+    	"fields": [
+            {
+                "$type": "Numeric",
+                "id": "SNlowQual",
+                "size": 100,
+                "required": false,
+            	"label": "Low quality threshold",
+                "helpText": "Low quality threshold",
+            	"min": 0,
+            	"max": 100,
+            	"value": 30,
+            	"numericType": "Integer"
+            },
+            {
+                "$type": "Numeric",
+                "id": "SNqualRate",
+                "size": 100,
+                "required": false,
+                "label": "Low quality rate",
+                "helpText": "Low quality rate",
+            	"min": 0,
+            	"max": 1,
+            	"value": 0.5,
+            	"numericType": "FloatingPoint"
+            },
+            {
+                "$type": "Numeric",
+                "id": "SNnRate",
+                "size": 100,
+                "required": false,
+                "label": "N rate threshold",
+                "helpText": "N rate threshold",
+                "min": 0,
+            	"max": 1,
+            	"value": 0.05,
+            	"numericType": "FloatingPoint"
+            },
+            {
+                "$type": "RadioButton",
+                "id": "SNsangerOrNot",
+                "label": "Set data quality to Sanger",
+                "helpText": "set clean data qualtiy system to sanger, default is Illumina.",
+                "value": "-G",
+                "choices": [
+                	{
+            			"value": "-G",
+            			"label": "Yes"
+            		},
+            		{
+            			"value": "",
+            			"label": "No"
+            		}
+            	]
+            },
+            {
+                "$type": "RadioButton",
+                "id": "SNseqType",
+                "label": "Sequence fq name type",
+                "helpText": "0->old fastq name, 1->new fastq name",
+                "value": 1,
+                "choices": [
+                    {
+            			"value": 1,
+            			"label": "new fastq name"
+            		},
+            		{
+            			"value": 0,
+            			"label": "old fastq name"
+            		}
+            	]
+            },
+                        {
+                "$type": "RadioButton",
+                "id": "SNqualSys",
+                "label": "Quality system",
+                "helpText": "1:illumina, 2:sanger",
+                "value": 2,
+                "choices": [
+                    {
+                		"value": 1,
+            			"label": "Illumina"
+            		},
+            		{
+            			"value": 2,
+            			"label": "Sanger"
+            		}
+            	]
+            }            
+        ]
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "FieldSet",
+    	"id": "BWApara",
+    	"label": "BWA mem parameters",
+    	"isCollapsible": true,
+    	"isOpen": true,
+    	"helpText": "Some useful paragraph on what this field set is about.",
+    	"fields": [
+            {
+                "$type": "RadioButton",
+                "id": "BWAsecOrNot",
+                "label": "Mark shorter split hits as secondary",
+                "helpText": "Mark shorter split hits as secondary.",
+                "value": "-M",
+                "choices": [
+                    {
+            			"value": "-M",
+            			"label": "Yes"
+            		},
+            		{
+            			"value": "",
+            			"label": "No"
+            		}
+            	]
+            },
+            {
+                "$type": "Select",
+                "id": "BWAgenome",
+                "label": "Reference Genome",
+                "helpText": "Select the reference genome. Currently, you can only use Human (UCSC hg19).",
+                "choices": [ 
+                    { 
+                        "value": "/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta",
+                        "text": "Human (UCSC hg19)",
+                        "selected": "true"
+                	}, 
+                    { 
+                        "value": "/genomes/Mus_musculus/UCSC/mm9/Sequence/BowtieIndex",
+                        "text": "Mus musculus (UCSC mm9)",
+                        "selected": "false"
+        			}
+		        ]
+            }     
+        ]
+    },
+    {
+        "$type": "SectionBreak"
+    },
+    {
+        "$type": "FieldSet",
+    	"id": "vardictPara",
+    	"label": "Variant calling parameters",
+    	"isCollapsible": true,
+    	"isOpen": true,
+    	"helpText": "Some useful paragraph on what this field set is about.",
+    	"fields": [
+            {
+                "$type": "Numeric",
+                "id": "VDalleleFreq",
+                "size": 100,
+                "required": false,
+                "label": "The threshold for allele frequency",
+                "helpText": "The threshold for allele frequency",
+                "min": 0,
+            	"max": 1,
+            	"value": 0.001,
+            	"numericType": "FloatingPoint"
+            },
+            {
+                "$type": "Numeric",
+                "id": "TGchrCol",
+                "size": 100,
+                "required": false,
+            	"label": "The column for chromosome",
+                "helpText": "The column for chromosome.",
+            	"min": 1,
+            	"max": 20,
+            	"value": 1,
+            	"numericType": "Integer"
+            },
+            {
+                "$type": "Numeric",
+                "id": "TGregStart",
+                "size": 100,
+                "required": false,
+                "label": "The column for region start",
+                "helpText": "The column for region start.",
+            	"min": 1,
+            	"max": 20,
+            	"value": 2,
+            	"numericType": "Integer"
+            },
+            {
+                "$type": "Numeric",
+                "id": "TGregEnd",
+                "size": 100,
+                "required": false,
+                "label": "The column for region end",
+                "helpText": "The column for region end.",
+                "min": 1,
+            	"max": 20,
+            	"value": 3,
+            	"numericType": "Integer"
+            }
+        ]
+    },
+    ],
+    "rulesets":[
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Read",
+            "severity": "Error",
+            "message": "You do not have read access to the selected sample",
+            "id": "sample-reader"
+        },
+        {
+            "$type": "PermissionValidationRule",
+            "permissions": "Own",
+            "severity": "Error",
+            "message": "You aren't the owner of the selected project.",
+            "id": "is-project-owner"
+        }
+    ]
+}
